@@ -1,41 +1,31 @@
 #!/bin/bash
 
+## functions
+create_file_if_not_exists () {
+  if [ -e "$1" ]; then
+    echo "$1 already exists."
+    exit 1
+  fi
+  touch "$1"
+  echo "created $1"
+}
+
+TERRAFORM_VERSION_FILE_NAME=.terraform-version
+TERRAFORM_VERSION=$(curl -fsSL https://raw.githubusercontent.com/gotooooo/terraform-module-initializer/main/files/$TERRAFORM_VERSION_FILE_NAME)
+
 ## create .terraform-version
-if [ -e .terraform-version ]; then
-  echo ".terraform-version already exists."
+if [ -e $TERRAFORM_VERSION_FILE_NAME ]; then
+  echo "$TERRAFORM_VERSION_FILE_NAME already exists."
   exit 1
 fi
-echo '1.4.4' > .terraform-version
-echo "created .terraform-version"
+echo "$TERRAFORM_VERSION" > $TERRAFORM_VERSION_FILE_NAME
+echo "created $TERRAFORM_VERSION_FILE_NAME"
 
 ## create tf files
-if [ -e main.tf ]; then
-  echo "main.tf already exists."
-  exit 1
-fi
-touch main.tf
-echo "created main.tf"
-
-if [ -e veriables.tf ]; then
-  echo "veriables.tf already exists."
-  exit 1
-fi
-touch veriables.tf
-echo "created variables.tf"
-
-if [ -e outputs.tf ]; then
-  echo "outputs.tf already exists."
-  exit 1
-fi
-touch outputs.tf
-echo "created outputs.tf"
-
-if [ -e versions.tf ]; then
-  echo "versions.tf already exists."
-  exit 1
-fi
-touch versions.tf
-echo "created versions.tf"
+create_file_if_not_exists main.tf
+create_file_if_not_exists variables.tf
+create_file_if_not_exists outputs.tf
+create_file_if_not_exists versions.tf
 
 ## create examples template
 EXAMPLES_COMPLETE_DIR=examples/complete
@@ -46,11 +36,12 @@ if [ -n "$(ls $EXAMPLES_COMPLETE_DIR)" ]; then
   exit 1
 fi
 
-touch $EXAMPLES_COMPLETE_DIR/main.tf
-touch $EXAMPLES_COMPLETE_DIR/variables.tf
-touch $EXAMPLES_COMPLETE_DIR/outputs.tf
-touch $EXAMPLES_COMPLETE_DIR/versions.tf
-touch $EXAMPLES_COMPLETE_DIR/providers.tf
-touch $EXAMPLES_COMPLETE_DIR/locals.tf
-echo '1.4.4' > $EXAMPLES_COMPLETE_DIR/.terraform-version
-echo "created examples/complete/"
+EXAMPLE_FILE_NAMES=(main.tf variables.tf outputs.tf versions.tf providers.tf locals.tf)
+
+for NAME in "${EXAMPLE_FILE_NAMES[@]}"
+do
+  touch $EXAMPLES_COMPLETE_DIR/"$NAME"
+done
+
+echo "$TERRAFORM_VERSION" > $EXAMPLES_COMPLETE_DIR/$TERRAFORM_VERSION_FILE_NAME
+echo "created $EXAMPLES_COMPLETE_DIR/"

@@ -1,9 +1,11 @@
 #!/bin/bash
 
-if [ -e .gitattributes ]; then
-  echo ".gitattributes already exists."
+FILE_NAME=.gitattributes
+
+if [ -e $FILE_NAME ]; then
+  echo "$FILE_NAME already exists."
   exit 1
 fi
-echo '*.tf text eol=lf
-*.md text eol=lf' > .gitattributes
-echo "created .gitattributes"
+
+curl -fsSL https://raw.githubusercontent.com/gotooooo/terraform-module-initializer/main/files/$FILE_NAME > $FILE_NAME
+echo "created $FILE_NAME"
