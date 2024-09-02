@@ -11,7 +11,7 @@ create_file_if_not_exists () {
 }
 
 TERRAFORM_VERSION_FILE_NAME=.terraform-version
-TERRAFORM_VERSION=$(curl -fsSL https://raw.githubusercontent.com/gotooooo/terraform-module-initializer/main/files/$TERRAFORM_VERSION_FILE_NAME)
+TERRAFORM_VERSION=$(curl -fsSL https://raw.githubusercontent.com/gotokazuki/terraform-module-initializer/main/files/$TERRAFORM_VERSION_FILE_NAME)
 
 ## create .terraform-version
 if [ -e $TERRAFORM_VERSION_FILE_NAME ]; then

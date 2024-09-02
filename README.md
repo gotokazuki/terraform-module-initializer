@@ -3,5 +3,5 @@
 ## Usage
 
 ```shell
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/gotooooo/terraform-module-initializer/main/initialize.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/gotokazuki/terraform-module-initializer/main/initialize.sh)"
 ```
